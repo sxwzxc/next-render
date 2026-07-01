@@ -38,6 +38,10 @@ export type ThreeSceneOptions = {
   bloomStrength?: number
   bloomRadius?: number
   afterimage?: number
+  // 是否添加零散环境粒子（默认 true），所有场景共享同一套科技感粒子背景
+  ambientParticles?: boolean
+  particleColor?: number
+  particleCount?: number
 }
 
 // 创建一个自管理的 Three.js 画布，返回挂载到组件的 container ref。
@@ -93,6 +97,36 @@ export function useThreeScene(setup: ThreeSceneSetup, options: ThreeSceneOptions
     )
     composer.addPass(bloomPass)
 
+    // 环境零散粒子：球形壳分布 + 加色叠加 + 缓慢自转，所有场景共享科技感背景
+    let particles: THREE.Points | null = null
+    let pGeo: THREE.BufferGeometry | null = null
+    let pMat: THREE.PointsMaterial | null = null
+    if (opt.ambientParticles !== false) {
+      const pCount = opt.particleCount ?? 450
+      pGeo = new THREE.BufferGeometry()
+      const positions = new Float32Array(pCount * 3)
+      for (let i = 0; i < pCount; i++) {
+        const r = 3 + Math.random() * 4
+        const theta = Math.random() * Math.PI * 2
+        const phi = Math.acos(2 * Math.random() - 1)
+        positions[i * 3] = r * Math.sin(phi) * Math.cos(theta)
+        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
+        positions[i * 3 + 2] = r * Math.cos(phi)
+      }
+      pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+      pMat = new THREE.PointsMaterial({
+        color: opt.particleColor ?? 0x66ddff,
+        size: 0.04,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.7,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      })
+      particles = new THREE.Points(pGeo, pMat)
+      scene.add(particles)
+    }
+
     const clock = new THREE.Clock()
     const result = setupRef.current({
       scene,
@@ -113,6 +147,7 @@ export function useThreeScene(setup: ThreeSceneSetup, options: ThreeSceneOptions
       frameId = requestAnimationFrame(loop)
       const dt = clock.getDelta()
       elapsed += dt
+      if (particles) particles.rotation.y = elapsed * 0.04
       result.animate?.(elapsed, dt)
       controls.update()
       composer.render()
@@ -129,11 +164,17 @@ export function useThreeScene(setup: ThreeSceneSetup, options: ThreeSceneOptions
       bloomPass.setSize(w, h)
     }
     window.addEventListener('resize', handleResize)
+    // 监听容器自身尺寸变化（如侧边栏收起），保证画布跟随
+    const resizeObserver = new ResizeObserver(handleResize)
+    resizeObserver.observe(container)
 
     return () => {
       cancelAnimationFrame(frameId)
       window.removeEventListener('resize', handleResize)
+      resizeObserver.disconnect()
       result.dispose?.()
+      pGeo?.dispose()
+      pMat?.dispose()
       controls.dispose()
       bloomPass.dispose()
       afterimagePass.dispose()

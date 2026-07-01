@@ -3,8 +3,34 @@
 // 核心：SVG mask 多边形遮罩 + 多轨异步旋转 + contrast 对焦 + hue-rotate 色相旋转
 const FaceID = () => {
   return (
-    <div className="w-full h-full min-h-[520px] flex items-center justify-center bg-[#111]">
+    <div className="w-full h-full min-h-[520px] flex items-center justify-center bg-[#111] relative overflow-hidden">
       <style>{`
+        .faceid-stars {
+          position: absolute;
+          inset: -50%;
+          width: 200%;
+          height: 200%;
+          background-image:
+            radial-gradient(1px 1px at 20px 30px, #6fe0ff 50%, transparent 51%),
+            radial-gradient(1px 1px at 120px 80px, #ffffff 50%, transparent 51%),
+            radial-gradient(1.5px 1.5px at 200px 160px, #4cc8ff 50%, transparent 51%),
+            radial-gradient(1px 1px at 300px 60px, #9fe8ff 50%, transparent 51%),
+            radial-gradient(1px 1px at 80px 220px, #ffffff 50%, transparent 51%),
+            radial-gradient(1.5px 1.5px at 360px 280px, #6fe0ff 50%, transparent 51%),
+            radial-gradient(1px 1px at 160px 340px, #4cc8ff 50%, transparent 51%),
+            radial-gradient(1px 1px at 260px 400px, #ffffff 50%, transparent 51%),
+            radial-gradient(1px 1px at 60px 460px, #9fe8ff 50%, transparent 51%),
+            radial-gradient(1.5px 1.5px at 420px 120px, #6fe0ff 50%, transparent 51%);
+          background-repeat: repeat;
+          background-size: 480px 480px;
+          opacity: 0.55;
+          animation: faceid-stardrift 60s linear infinite;
+          pointer-events: none;
+        }
+        @keyframes faceid-stardrift {
+          0% { transform: translate(0, 0); }
+          100% { transform: translate(-480px, -480px); }
+        }
         .faceid-loader {
           --color-one: #ffbf48;
           --color-two: #be4a1d;
@@ -104,6 +130,7 @@ const FaceID = () => {
           100% { filter: hue-rotate(0deg); }
         }
       `}</style>
+      <div className="faceid-stars" />
       <div className="faceid-loader">
         <svg width="100" height="100" viewBox="0 0 100 100">
           <defs>
