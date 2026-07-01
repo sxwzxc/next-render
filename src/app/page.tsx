@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { PageLayout } from '@/components/layout'
 import Cube3D from '@/components/Cube3D'
 import SphereScan3D from '@/components/SphereScan3D'
-import FaceID3D from '@/components/FaceID3D'
+import FaceID from '@/components/FaceID'
 import { cn } from '@/lib/utils'
 
 const animations = [
@@ -23,8 +23,8 @@ const animations = [
   {
     id: 'faceid',
     label: 'Face ID 扫描',
-    desc: '仿灵动岛人脸扫描动画',
-    Component: FaceID3D,
+    desc: '纯 CSS 仿苹果 FaceID 加载动画',
+    Component: FaceID,
   },
 ]
 
