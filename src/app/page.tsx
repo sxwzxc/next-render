@@ -1,12 +1,10 @@
 import { PageLayout } from '@/components/layout'
-import Hero from '@/components/Hero'
-import Features from '@/components/Features'
+import Cube3D from '@/components/Cube3D'
 
 export default function Home() {
   return (
     <PageLayout>
-      <Hero />
-      <Features />
+      <Cube3D />
     </PageLayout>
   )
 }
