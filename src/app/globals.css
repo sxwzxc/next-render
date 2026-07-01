@@ -20,6 +20,56 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* 融入暗色界面的自定义滚动条 */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59, 130, 246, 0.45) transparent;
+}
+.custom-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.4);
+  border-radius: 999px;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.7);
+}
+
+/* 亮度滑块样式 */
+.brightness-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1e293b, #3b82f6);
+  outline: none;
+  cursor: pointer;
+}
+.brightness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbbf24;
+  border: 2px solid #fde68a;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+  cursor: pointer;
+}
+.brightness-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fbbf24;
+  border: 2px solid #fde68a;
+  box-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+  cursor: pointer;
+}
+
 @keyframes loading-bar {
   0% {
     width: 0%;

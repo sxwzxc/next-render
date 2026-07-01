@@ -1,9 +1,15 @@
 // 仿苹果 FaceID 加载动画（纯 CSS + SVG mask 实现）
 // 参考实现：https://forum.trae.cn/t/topic/232
 // 核心：SVG mask 多边形遮罩 + 多轨异步旋转 + contrast 对焦 + hue-rotate 色相旋转
+import { useBrightness } from './three/BrightnessContext'
+
 const FaceID = () => {
+  const { multiplier } = useBrightness()
   return (
-    <div className="w-full h-full min-h-[520px] flex items-center justify-center bg-[#111] relative overflow-hidden">
+    <div
+      className="w-full h-full min-h-[520px] flex items-center justify-center bg-[#111] relative overflow-hidden"
+      style={{ filter: `brightness(${multiplier})` }}
+    >
       <style>{`
         .faceid-stars {
           position: absolute;

@@ -7,6 +7,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass.js'
+import { useBrightness } from './BrightnessContext'
 
 // 通用 Three.js 场景上下文：scene/camera/renderer/composer/group/controls/postprocessing
 export type ThreeSceneCtx = {
@@ -53,6 +54,9 @@ export function useThreeScene(setup: ThreeSceneSetup, options: ThreeSceneOptions
   setupRef.current = setup
   const optionsRef = useRef(options)
   optionsRef.current = options
+  const { multiplier } = useBrightness()
+  const brightnessRef = useRef(multiplier)
+  brightnessRef.current = multiplier
 
   useEffect(() => {
     const container = containerRef.current
@@ -141,12 +145,19 @@ export function useThreeScene(setup: ThreeSceneSetup, options: ThreeSceneOptions
       height,
     })
 
+    // 场景自身的 bloom 基础强度，实时乘以全局亮度倍率
+    const baseBloom = opt.bloomStrength ?? 1.2
+    const baseParticleOpacity = opt.particleColor ? 0.7 : 0.7
+
     let elapsed = 0
     let frameId = 0
     const loop = () => {
       frameId = requestAnimationFrame(loop)
       const dt = clock.getDelta()
       elapsed += dt
+      const m = brightnessRef.current
+      bloomPass.strength = baseBloom * m
+      if (pMat) pMat.opacity = baseParticleOpacity * m
       if (particles) particles.rotation.y = elapsed * 0.04
       result.animate?.(elapsed, dt)
       controls.update()
