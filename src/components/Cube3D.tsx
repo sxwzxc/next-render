@@ -151,7 +151,7 @@ const Cube3D = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-[calc(100vh-64px)] min-h-[520px] cursor-grab active:cursor-grabbing"
+      className="w-full h-full min-h-[520px] cursor-grab active:cursor-grabbing"
     />
   )
 }
