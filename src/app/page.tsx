@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { PageLayout } from '@/components/layout'
 import Cube3D from '@/components/Cube3D'
+import SphereScan3D from '@/components/SphereScan3D'
 import FaceID3D from '@/components/FaceID3D'
 import { cn } from '@/lib/utils'
 
@@ -14,9 +15,15 @@ const animations = [
     Component: Cube3D,
   },
   {
+    id: 'sphere-scan',
+    label: '球体扫描',
+    desc: '线框球体 + 上下扫描环',
+    Component: SphereScan3D,
+  },
+  {
     id: 'faceid',
-    label: 'Face ID 解锁',
-    desc: '模拟 iPhone 人脸解锁扫描',
+    label: 'Face ID 扫描',
+    desc: '仿灵动岛人脸扫描动画',
     Component: FaceID3D,
   },
 ]
