@@ -5,6 +5,9 @@ import { PageLayout } from '@/components/layout'
 import Cube3D from '@/components/Cube3D'
 import SphereScan3D from '@/components/SphereScan3D'
 import FaceID from '@/components/FaceID'
+import RotatingRings3D from '@/components/RotatingRings3D'
+import OrbitParticles3D from '@/components/OrbitParticles3D'
+import Galaxy3D from '@/components/Galaxy3D'
 import { cn } from '@/lib/utils'
 
 const animations = [
@@ -25,6 +28,24 @@ const animations = [
     label: 'Face ID 扫描',
     desc: '纯 CSS 仿苹果 FaceID 加载动画',
     Component: FaceID,
+  },
+  {
+    id: 'rings',
+    label: '不规则旋转圆环',
+    desc: '多圆环绕随机轴异步旋转 + 光弧拖尾',
+    Component: RotatingRings3D,
+  },
+  {
+    id: 'orbit-particles',
+    label: '绕圈旋转粒子',
+    desc: '多条倾角轨道粒子流光环',
+    Component: OrbitParticles3D,
+  },
+  {
+    id: 'galaxy',
+    label: '螺旋星系',
+    desc: '多旋臂粒子星系 + 核心辉光',
+    Component: Galaxy3D,
   },
 ]
 
